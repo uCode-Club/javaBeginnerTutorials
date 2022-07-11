@@ -10,8 +10,8 @@ public class Lesson4 {
     public static void main(String[] args) {
         // Static methods ("functions")
         // • Naming convention: camelCase (like variables)
-//        System.out.println(test("Hello", '.'));
-//        greet();
+        System.out.println(test("Hello", '.'));
+        greet();
 
         System.out.println();
 
@@ -78,6 +78,5 @@ public class Lesson4 {
         String input = scanner.next();
         scanner.nextLine();
         System.out.println("Nice to meet you, " + input);
-        System.out.println("Nice to meet you, " + scanner.nextLine());
     }
 }
