@@ -7,6 +7,14 @@ import static org.example.lesson4.Example.anotherExample;
 public class Lesson4 {
     static int a = -3;
 
+    public static final double BC_TAX_PERCENT;
+
+    // Class initializer
+    static {
+        BC_TAX_PERCENT = 0.12;
+        System.out.println("Initializing " + Lesson5.class.getName() + '\n');
+    }
+
     public static void main(String[] args) {
         // Static methods ("functions")
         // • Naming convention: camelCase (like variables)

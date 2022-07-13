@@ -1,14 +1,6 @@
 import org.example.lesson5.Person;
 
 public class Lesson5 {
-    public static final double BC_TAX_PERCENT;
-
-    // Class initializer
-    static {
-        BC_TAX_PERCENT = 0.12;
-        System.out.println("Initializing " + Lesson5.class.getName() + '\n');
-    }
-
     public static void main(String[] args) {
         Person arcadi = new Person("Arcadi", 16.9, "A+");
         arcadi.name = "arcadi";
