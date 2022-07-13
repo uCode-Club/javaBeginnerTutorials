@@ -12,7 +12,7 @@ public class Lesson4 {
     // Class initializer
     static {
         BC_TAX_PERCENT = 0.12;
-        System.out.println("Initializing " + Lesson5.class.getName() + '\n');
+        System.out.println("Initializing " + Lesson4.class.getName() + '\n');
     }
 
     public static void main(String[] args) {
