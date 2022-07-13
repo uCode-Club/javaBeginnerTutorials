@@ -24,4 +24,24 @@ public class Person {
     public String getName() {
         return name;
     }
+
+    public double getAge() {
+        return age;
+    }
+
+    public String getBLOOD_TYPE() {
+        return BLOOD_TYPE;
+    }
+
+    public static void setSuccessCode(int successCode) {
+        Person.successCode = successCode;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(double age) {
+        this.age = age;
+    }
 }
