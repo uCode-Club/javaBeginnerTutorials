@@ -1,4 +1,4 @@
-package org.example.lesson8.lambda;
+package org.example.lesson9.lambda;
 
 @FunctionalInterface // Good to annotate the interface with if it is intended to be used with lambdas
 public interface AnonymousFunction {

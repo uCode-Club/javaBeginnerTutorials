@@ -1,95 +1,131 @@
-import org.example.lesson9.CustomException;
-import org.example.lesson9.CustomRuntimeException;
-
-import java.util.Scanner;
+import org.example.lesson8.Animal;
+import org.example.lesson9.Flyable;
+import org.example.lesson9.Parrot;
+import org.example.lesson9.Talkable;
+import org.example.lesson9.lambda.AnonymousFunction;
 
 public final class Lesson9 {
     public static void main(String[] args) {
-        // Understanding throwable classes in Java
+        // What are interfaces?
+        // • Another abstract type to specify additional behaviour for classes that must be implemented.
+        // • Can't directly be instantiated.
+        // • Don't extend Object since classes that implement the interface do extend Object.
+        // • Classes can implement any number of interfaces, unlike with classes.
         //
-        // Throwable hierarchy diagram below with example classes
+        // Example use cases:
+        // • Event listeners
+        // • Contracts (more of an idea)
+        // • Special data types (Collection<E>, List<E>, Set<E>, etc.)
+        // • Total abstraction
+        // • Simplified and more generic data types when creating objects: a generic Flyable object that can take in any flyable animal
+        // • Additional functionality to classes
         //
-        //     Throwable
-        //     ^      ^
-        //     |      |
-        //  Error*  Exception <-------¬- IOException
-        //     ^                      |
-        //     |                      |
-        // StackOverflowError  RuntimeException*
+        // What can interfaces do (only shows what they can do) (with example after ':')?
+        // • Public abstract methods: String getName();
+        // • Public non-final default methods (the interface's way for regular methods): default void doStuff() {...}
+        // • Private methods: private void test() {...}
+        // • (public static final) fields: int WRONG_PI = (int) Math.ceil(Math.PI);
         //
-        // *= class/subclasses can be thrown without needing to declare 'throws' or surround with try-catch
-        //
+        // Interfaces do take time to understand, so don't be surprised if you don't completely understand how they work by the end of this lesson.
+
+        //          Animal                     ^
+        //            ^                        | Extends (classes extending classes, interfaces extending interfaces)
+        //            |                        |
+        // Flyable    |    Talkable
+        //    ^       |        ^
+        //    |       |        |               ^
+        //            |                        | Implements (classes implementing interfaces)
+        //    |       |        |
+        //            |                        |
+        //    \ - - Parrot - - /
+
+        Animal parrotAsAnimal = new Parrot("Jack", 10.6);
+        parrotAsAnimal.introduce();
+        System.out.println(parrotAsAnimal.isCat());
+        // Compile error
+        //parrotAsAnimal.fly(); // Animal is not an instance of Parrot, Flyable
+        //parrotAsAnimal.eat(); // Animal is not an instance of Parrot
+
+        System.out.println();
+
+        System.out.println(parrotAsAnimal instanceof Flyable);
+        Flyable parrotAsFlyable = (Flyable) parrotAsAnimal;
+        parrotAsFlyable.fly(1);
+        // Compile error
+        //parrotAsFlyable.introduce(); // Flyable is not an instance of Parrot, Animal.
+        //parrotAsFlyable.eat(); // Flyable is not an instance of Parrot
+
+        System.out.println();
+
+        Parrot parrot = (Parrot) parrotAsAnimal;
+        parrot.eat();
+
+        talk(parrot); // Parrot is an instance of Talkable
+        // Compile error
+        //talk(parrotAsAnimal); // Animal is not an instance of Talkable
+        //talk(parrotAsFlyable); // Flyable is not an instance of Talkable
+
+        System.out.println();
+        System.out.println();
+
+        // Anonymous objects with interfaces
         // Notes:
-        // • If you are using a method/constructor that declares 'throws' with a non-runtime Throwable object being thrown,
-        //   you need to surround with try-catch, or declare 'throws' if you're using it in a method/constructor.
-        // • Exception**: The class Exception and its subclasses are a form of Throwable that indicates conditions that a reasonable application might want to catch.
-        // • Error**: An Error is a subclass of Throwable that indicates serious problems that a reasonable application should not try to catch.
-        //
-        // **= from part of Javadoc
+        // • We can only treat it as if it's the instance of an interface; can't use new fields and methods defined in it.
+        // • While interfaces don't directly have object methods, anonymous objects do.
+        AnonymousFunction anonymousFunction = new AnonymousFunction() {
+            @Override
+            public Object getValue(Object... args) {
+                System.out.println("In anonymous AnonymousFunction!");
+                return args[1];
+            }
+        };
+        System.out.println(anonymousFunction.getValue("Text", "Text 1"));
 
-        // CustomException
-        //exception(); // CustomException is not a runtime throwable, so we need to handle it (two ways):
-                       // • Surround with try-catch
-                       // • Declare 'throws' (only in method/constructor)
-//        try {
-//            exception();
-//        } catch (CustomException ce) {
-//            ce.printStackTrace();
-//        }
+        System.out.println();
 
-        // CustomRuntimeException
-        //runtimeException(); // CustomRuntimeException is a runtime throwable (RuntimeException), so we don't have to handle it
-//        try {
-//            runtimeException();
-//        } catch (CustomRuntimeException cre) {
-//            cre.printStackTrace();
-//        }
+        Flyable myFlyable = new Flyable() {
+            private int flyDistance = 5;
 
-        // StackOverflowError
-        //stackOverflowError(); // StackOverflowError is a runtime throwable (Error), so we don't have to handle it
-//        try {
-//            stackOverflowError();
-//        } catch (StackOverflowError soe) {
-//            soe.printStackTrace();
-//        }
+            @Override
+            public void fly(int kmRange) {
+                System.out.println("Flew " + (kmRange + flyDistance++) + " KM.");
+            }
 
-        // User input (and connected to above)
-        // java.util.Scanner methods (descriptions assume you're using java.util.Scanner for user input (System.in)):
-        // • scanner.nextLine()    reads user input as String until '\n' (or by pressing enter)
-        // • scanner.next()        reads user input as String until ' '
-        // • scanner.nextInt()     reads user input as int
-        // • scanner.nextDouble()  reads user input as double
-        // Important note:
-        // • If you're reusing the scanner that did not call scanner.nextLine() and does not call scanner.nextLine() next,
-        //   you'll want to call it before the next user input due to line problems;
-        //   for example, like this: scanner.nextInt(); scanner.nextLine(); scanner.nextInt() /* assume integer inputs, but nextLine() "clears the line" */
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your age: "); // This is the prompt
-        drive(scanner.nextInt() /* <- will throw java.util.InputMismatchException if the user does not input a valid integer */);
-        scanner.close();
+            @Override
+            public int autoFly() {
+                return flyDistance;
+                //return Flyable.super.autoFly();
+            }
+
+            // Can't override java.lang.Object methods in interfaces, but can in anonymous objects
+            @Override
+            public String toString() {
+                return "A flyable anonymous object!";
+            }
+        };
+        System.out.println(myFlyable.autoFly());
+        myFlyable.fly(3);
+        System.out.println(myFlyable.autoFly());
+        System.out.println(myFlyable);
+
+        System.out.println();
+
+        // The lambda way (alternative to anonymous objects for interfaces*)!
+        // * Can be used if there is only one abstract method in the interface
+        // • Use parentheses in the argument definition (except for one argument): () -> {...};, arg1 -> {...};, (arg1, arg2) -> {...};
+        // • Can directly point to return value (non-void return) or a statement (void return): (a, b) -> a + b;
+        AnonymousFunction lambdaFunction = args1 -> {
+            System.out.println("In lambda!");
+            System.out.println(AnonymousFunction.WRONG_PI);
+            return args1[1];
+        };
+        System.out.println(lambdaFunction.getValue("Text 2", "Text 3"));
+
+        Runnable runnable = () -> System.out.println("Runnable lambda");
+        runnable.run();
     }
 
-    private static void exception() throws CustomException {
-        throw new CustomException();
-    }
-
-    private static void runtimeException() {
-        throw new CustomRuntimeException();
-    }
-
-    private static void stackOverflowError() {
-        // Infinite recursion will eventually cause StackOverflowError to be thrown
-        stackOverflowError(); // Method will never complete
-    }
-
-    private static void drive(int age) {
-        if (age < 0) {
-            throw new IllegalArgumentException("Parameter 'age' should not be less than 0!");
-        }
-        if (age < 16) {
-            throw new CustomRuntimeException("You must be at least 16 years old to drive!");
-        }
-
-        System.out.println("Driving...");
+    private static void talk(Talkable talkable) {
+        talkable.talk();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.lesson7;
+package org.example.lesson8;
 
 import java.awt.Color;
 

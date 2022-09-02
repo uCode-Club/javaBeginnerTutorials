@@ -1,4 +1,4 @@
-package org.example.lesson9;
+package org.example.lesson7;
 
 // Remember for next example:
 // • Java automatically defines the no-args constructor if the super class has a no-args constructor.

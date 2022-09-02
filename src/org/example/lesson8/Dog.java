@@ -1,4 +1,4 @@
-package org.example.lesson7;
+package org.example.lesson8;
 
 public final class Dog extends Animal {
     public Dog(String name, double age) {

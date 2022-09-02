@@ -1,6 +1,6 @@
-package org.example.lesson8;
+package org.example.lesson9;
 
-import org.example.lesson7.Animal;
+import org.example.lesson8.Animal;
 
 public class Parrot extends Animal implements Flyable, Talkable {
     public Parrot(String name, double age) {

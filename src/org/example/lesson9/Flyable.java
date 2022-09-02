@@ -1,4 +1,4 @@
-package org.example.lesson8;
+package org.example.lesson9;
 
 public interface Flyable {
     // Shortened from: public abstract void fly(int kmRange);

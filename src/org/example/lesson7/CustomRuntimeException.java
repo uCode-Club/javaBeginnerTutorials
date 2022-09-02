@@ -1,4 +1,4 @@
-package org.example.lesson9;
+package org.example.lesson7;
 
 // Note that we redefine the constructors:
 // • We instantiate this class with an argument (String message);
